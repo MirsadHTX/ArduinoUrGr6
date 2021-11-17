@@ -32,11 +32,6 @@ void loop() {
   }
   delay(50);
 
-  if(state == 0 && flipped == 1)
-  {
-    state += 1
-  }
-
   if(OnFlip()==1)
   {
     if(state == maxState) {
