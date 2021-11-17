@@ -8,9 +8,12 @@ rgb_lcd lcd;
 Flipper flipX;
 
 void setup() {
+  int state = 0;
+  const maxState = 4;
+  
 	lcd.begin(16, 2);
-	accelmeter.init();  
-  }
+	accelmeter.init(); 
+   }
 
 void loop() {
   accelmeter.getAcceleration(&x, &y, &z); // Tager memory address som input
@@ -28,4 +31,34 @@ void loop() {
     digitalWrite(4, LOW);
   }
   delay(50);
+
+  if(state == 0 && flipped == 1)
+  {
+    state += 1
+  }
+
+  if(OnFlip()==1)
+  {
+    if(state == maxState) {
+      state = 0;
+    } else {
+      state += 1    
+    }
+  }
+
+  switch(state)
+  {
+    case 1:
+
+      break;
+    case 2:
+
+      break;
+    case 3:
+
+      break;
+    case maxState:
+
+      break;
+    default:
 }
