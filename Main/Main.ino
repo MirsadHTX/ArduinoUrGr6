@@ -2,6 +2,7 @@
 #include "MMA7660.h"
 #include "rgb_lcd.h"
 #include "FlipperClass.h"
+#include "RandGen.h"
 
 float x, y, z;
 int state;
@@ -10,7 +11,6 @@ const int maxState = 4;
 MMA7660 accelmeter;
 rgb_lcd lcd;
 Flipper flipX;
-
 
 void setup() {
   state = 0;
@@ -29,10 +29,6 @@ void loop()
   accelmeter.getAcceleration(&x, &y, &z); // Tager memory address som input
 	lcd.clear();
 	lcd.print(x);
-	lcd.print(" ");
-	lcd.print(y);
-	lcd.print(" ");
-	lcd.print(z);
 
   if(flipX.onFlip(x)!=0)
   {
@@ -59,7 +55,8 @@ void loop()
   switch(state)
   {
     case 1:
-
+      char elev = classState();
+      lcd.print(elev);
       break;
     case 2:
 
