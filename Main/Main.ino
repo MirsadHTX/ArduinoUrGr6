@@ -59,30 +59,27 @@ void loop()
   switch(state)
   {
     case 1:
-      lcd.clear();
-      lcd.print("Case 1");
+
       break;
     case 2:
-      lcd.clear();
-      lcd.print("Case 1");
+
       break;
     case 3:
-      lcd.clear();
-      lcd.print("Case 1");
+
       break;
     case maxState:
-      lcd.clear();
-      lcd.print("Case 1");
+
       break;
     default:
-      lcd.clear();
-      lcd.print("Error: No such case");
       break;
   }
-}
 
+ 
+}
 
 int RandGenerator(int lower, int upper)
 {
-  return random(lower, upper);
+  randomSeed(analogRead(0));
+  int randNumber = random(lower, upper);
+  return randNumber;
 }
