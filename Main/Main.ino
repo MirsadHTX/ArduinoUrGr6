@@ -4,7 +4,7 @@
 #include "FlipperClass.h"
 // #include "RandGen.h"
 
-int state;
+int state, flipCheck;
 const int maxState = 4;
 
 Flipper flipX;
@@ -14,9 +14,7 @@ rgb_lcd lcd;
 
 void setup() {
   state = 0;
-
-  // flipX = new Flipper();
-  
+    
   Serial.begin(9600);
   randomSeed(analogRead(0));
 
@@ -29,8 +27,10 @@ void loop()
   float x, y, z;
   accelmeter.getAcceleration(&x, &y, &z); // Tager memory address som input
   delay(50);
- 
-  if(flipX.onFlip(x)==1)
+
+  flipCheck = flipX.onFlip(x);
+  
+  if(flipCheck==1)
   {
     if(state == maxState) 
     {
@@ -40,17 +40,15 @@ void loop()
     {
       state += 1;  
     }
-  else if(flipX.onFlip(x)==-1)
+  }
+  else if(flipCheck==-1)
   {
     if(state == 0) 
     {
       state = maxState;
-      lcd.clear();
-      lcd.print("Rolling over");
     } 
     else
     {
-      lcd.print("Going back");
       state -= 1;  
     }
   }
