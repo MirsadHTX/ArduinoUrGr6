@@ -7,12 +7,14 @@ class Flipper
   int onFlip(int input)
   {
     lastState = currentState;
-    if(input > limit) {
+    if(input > limit) 
+    {
       currentState = 1;
     } 
     else if (input < -limit) 
     {
       currentState = -1;
+      
     }
     else
     {
@@ -20,7 +22,7 @@ class Flipper
     }
     if(lastState != currentState) 
     {
-      currentState;
+      return currentState;
     }
     else
     {
