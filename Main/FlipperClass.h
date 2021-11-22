@@ -13,8 +13,7 @@ class Flipper
     } 
     else if (input < -limit) 
     {
-      currentState = -1;
-      
+      currentState = -1; 
     }
     else
     {

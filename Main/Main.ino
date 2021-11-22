@@ -41,14 +41,13 @@ void loop()
       state += 1;  
     }
   }
-
-  if(flipX.onFlip(x)==-1)
+  else if(flipX.onFlip(x)==-1)
   {
     if(state == 0) 
     {
       state = maxState;
     } 
-    else 
+    else
     {
       state -= 1;  
     }
