@@ -40,16 +40,20 @@ void loop()
     {
       state += 1;  
     }
-  }
-
-  if(flipX.onFlip(x)==-1)
+  } 
+  else if(flipX.onFlip(x)==-1)
   {
     if(state == 0) 
     {
       state = maxState;
+      lcd.clear();
+      lcd.cursor(2,1);
+      lcd.print("Rolling over");
     } 
     else 
     {
+      lcd.print("Going back");
+      lcd.cursor(0,1);
       state -= 1;  
     }
   }
