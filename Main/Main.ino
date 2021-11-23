@@ -2,6 +2,7 @@
 #include "MMA7660.h"
 #include "rgb_lcd.h"
 #include "FlipperClass.h"
+#include "RTC.h"
 // #include "RandGen.h"
 
 int state, flipCheck, flipCheckY;
