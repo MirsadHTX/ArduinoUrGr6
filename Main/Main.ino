@@ -73,7 +73,7 @@ void loop()
       break;
     case 1:
       lcd.clear();
-      lcd.print("State 1");
+      printTime();
       break;    
     case 2:
       lcd.clear();
