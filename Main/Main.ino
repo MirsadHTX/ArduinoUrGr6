@@ -67,11 +67,8 @@ void loop()
   switch(state)
   {
     case 1:
-      /* char elev = classState();
-      lcd.print(elev); */
-
       lcd.clear();
-      lcd.print("State 1");
+      printTime();
       break;    
     case 2:
       lcd.clear();
