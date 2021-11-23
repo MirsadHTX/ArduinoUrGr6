@@ -2,7 +2,6 @@
 #include "MMA7660.h"
 #include "rgb_lcd.h"
 #include "FlipperClass.h"
-#include "RTC.h"
 // #include "RandGen.h"
 #include <Wire.h>
 #include "DS1307.h"
@@ -87,23 +86,25 @@ void loop()
   switch(state)
   {
     case 0:
-      
+      lcd.clear();
+      printTime();
       break;
     case 1:
       lcd.clear();
-      printTime();
+      lcd.print("State 2");
       break;    
     case 2:
       lcd.clear();
-      getName(flipCheckY);
+      //getName(flipCheckY);
+      lcd.print("State 3");
       break;
     case 3:
       lcd.clear();
-      lcd.print("State 3");
+      lcd.print("State 4");
       break;
     case maxState:
       lcd.clear();
-      lcd.print("State 4");
+      lcd.print("State 5");
       break;
     default:
       break;
