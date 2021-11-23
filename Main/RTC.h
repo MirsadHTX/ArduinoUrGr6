@@ -29,7 +29,7 @@ void printTime() {
     Serial.print(clock.year + 2000, DEC);
     Serial.print(" ");
     Serial.print(clock.dayOfMonth);
-    Serial.print("*"); */
+    Serial.print("*"); 
     
     switch (clock.dayOfWeek) { // Friendly printout the weekday
         case MON:
@@ -53,6 +53,6 @@ void printTime() {
         case SUN:
             Serial.print("SUN");
             break;
-    }
+    }*/
     Serial.println(" ");
 }
