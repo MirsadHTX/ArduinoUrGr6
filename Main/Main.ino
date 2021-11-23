@@ -18,7 +18,7 @@ void setup() {
   Serial.begin(9600);
   randomSeed(analogRead(0));
 
-	lcd.begin(16, 2);
+	lcd.begin(16, 8, 2);
   accelmeter.init(); 
 }
 
@@ -30,30 +30,41 @@ void loop()
 
   flipCheck = flipX.onFlip(x);
   
-  if(flipCheck==1)
+  switch(flipCheck)
   {
-    if(state == maxState) 
-    {
-      state = 0;
-    } 
-    else 
-    {
-      state += 1;  
-    }
-  }
-  else if(flipCheck==-1)
-  {
-    if(state == 0) 
-    {
-      state = maxState;
-    } 
-    else
-    {
-      state -= 1;  
-    }
+    case 1:
+      if(state == maxState) 
+      {
+        state = 0;
+      } 
+      else 
+      {
+        state += 1;  
+      }
+      digitalWrite(2,HIGH);
+      delay(100);
+      digitalWrite(2,LOW);
+      break;
+      
+    case -1:
+      if(state == 0) 
+      {
+        state = maxState;
+      } 
+      else
+      {
+        state -= 1;  
+      }
+      digitalWrite(2,HIGH);
+      delay(100);
+      digitalWrite(2,LOW);
+      break;
+    
+    default:
+      break;
   }
     
-switch(state)
+  switch(state)
   {
     case 1:
       /* char elev = classState();
@@ -64,7 +75,7 @@ switch(state)
       break;    
     case 2:
       lcd.clear();
-      lcd.print("State 2");
+      getName();
       break;
     case 3:
       lcd.clear();
@@ -76,5 +87,45 @@ switch(state)
       break;
     default:
       break;
+  }
+
+  
+}
+
+void getName(void) {
+  char names[30][10] = {
+  "Anders",
+  "Emil",
+  "Fahmi",
+  "Freja",
+  "Gustav W.",
+  "Gustav E.",
+  "Haris",
+  "Ismail",
+  "Jabriil",
+  "Jacob",
+  "Ludvig",
+  "Jeppe",
+  "Jonatan",
+  "Kasper",
+  "Lovro",
+  "Mathias",
+  "Mie",
+  "Mohammad",
+  "Nelisa",
+  "Nicolai",
+  "Pernille",
+  "Rasmus",
+  "Robert",
+  "Sarah",
+  "Silas",
+  "Simon",
+  "Thoeger",
+  "Tobias",
+  "Taaha",
+  "William"
+  };
+  lcd.print(names[random(0, 30)]);
+  while (digitalRead(8) == 0) {
   }
 }
