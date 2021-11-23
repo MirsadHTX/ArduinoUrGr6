@@ -4,17 +4,18 @@
 #include "FlipperClass.h"
 // #include "RandGen.h"
 
-int state, flipCheck;
+int state, flipCheck, flipCheckY;
 const int maxState = 4;
 
-Flipper flipX;
+Flipper flip;
 
 MMA7660 accelmeter;
 rgb_lcd lcd;
 
 void setup() {
   state = 0;
-    
+
+   
   Serial.begin(9600);
   randomSeed(analogRead(0));
 
@@ -28,7 +29,8 @@ void loop()
   accelmeter.getAcceleration(&x, &y, &z); // Tager memory address som input
   delay(50);
 
-  flipCheck = flipX.onFlip(x);
+  flipCheck = flip.onFlip(x);
+  flipCheckY = flip.onFlip(y);
   
   switch(flipCheck)
   {
@@ -66,16 +68,16 @@ void loop()
     
   switch(state)
   {
+    case 0:
+      
+      break;
     case 1:
-      /* char elev = classState();
-      lcd.print(elev); */
-
       lcd.clear();
       lcd.print("State 1");
       break;    
     case 2:
       lcd.clear();
-      getName();
+      getName(flipCheckY);
       break;
     case 3:
       lcd.clear();
@@ -92,8 +94,10 @@ void loop()
   
 }
 
-void getName(void) {
-  char names[30][10] = {
+void getName(int yPos) 
+{
+  char names[30][10] = 
+  {
   "Anders",
   "Emil",
   "Fahmi",
@@ -125,7 +129,10 @@ void getName(void) {
   "Taaha",
   "William"
   };
-  lcd.print(names[random(0, 30)]);
-  while (digitalRead(8) == 0) {
+    lcd.print(names[random(0, 30)]);
+    while(flip.onFlip(yPos) == 0) {
+     // delay(1000);
+     // lcd.clear();
+     // lcd.print(yPos);
   }
 }

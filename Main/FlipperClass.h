@@ -4,7 +4,7 @@ class Flipper
   float currentState = 0;
   float lastState = 0;   
   float limit = 0.8;  
-  int onFlip(int input)
+  int onFlip(float input)
   {
     lastState = currentState;
     if(input > limit) 
