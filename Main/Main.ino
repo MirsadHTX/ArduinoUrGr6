@@ -35,7 +35,7 @@ void setup() {
   Serial.begin(9600);
     clock.begin();
     clock.fillByYMD(2013, 1, 19); //Jan 19,2013
-    clock.fillByHMS(15, 28, 30); //15:28 30"
+    clock.fillByHMS(12, 30, 50); //15:28 30"
     clock.fillDayOfWeek(SAT);//Saturday
     clock.setTime();//write time to the RTC chip
 }
@@ -154,13 +154,13 @@ void getName(int yPos)
 void printTime() 
 {
     clock.getTime();
-    Serial.print(clock.hour, DEC);
-    Serial.print(":");
-    Serial.print(clock.minute, DEC);
-    Serial.print(":");
-   /* Serial.print(clock.second, DEC);
-    Serial.print("  ");
-    Serial.print(clock.month, DEC);
+    lcd.print(clock.hour, DEC);
+    lcd.print(":");
+    lcd.print(clock.minute, DEC);
+    lcd.print(":");
+    lcd.print(clock.second, DEC);
+    lcd.print("  ");
+    /* Serial.print(clock.month, DEC);
     Serial.print("/");
     Serial.print(clock.dayOfMonth, DEC);
     Serial.print("/");
@@ -191,6 +191,6 @@ void printTime()
         case SUN:
             Serial.print("SUN");
             break;
-    }*/
-    Serial.println(" ");
+    }
+    lcd.println(" ");*/
 }
