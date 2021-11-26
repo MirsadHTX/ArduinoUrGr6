@@ -95,7 +95,7 @@ void loop()
       break;    
     case 2:
       lcd.clear();
-      //getName(flipCheckY);
+      getName(flipCheckY);
       lcd.print("State 3");
       break;
     case 3:
@@ -149,13 +149,7 @@ void getName(int yPos)
   "William"
   };
     lcd.print(names[random(0, 30)]);
-    while(flip.onFlip(yPos) == 0) 
-    {
-     // delay(1000);
-     // lcd.clear();
-     // lcd.print(yPos);
-     }
-  
+    sleep_until(flip.onFlip(yPos));
 }
 void printTime() 
 {
