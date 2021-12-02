@@ -21,6 +21,8 @@ Flipper flip;
 
 MMA7660 accelmeter;
 rgb_lcd lcd;
+long int unixTime = 1638446451;
+
 
 void setup() {
   state = 0;
@@ -34,10 +36,11 @@ void setup() {
 
   Serial.begin(9600);
     clock.begin();
-    clock.fillByYMD(2013, 1, 19); //Jan 19,2013
+ /*   clock.fillByYMD(2013, 1, 19); //Jan 19,2013
     clock.fillByHMS(12, 30, 50); //15:28 30"
     clock.fillDayOfWeek(SAT);//Saturday
-    clock.setTime();//write time to the RTC chip
+   */ 
+    clock.setTime(unixTime);//write time to the RTC chip
 }
 
 void loop()
@@ -91,7 +94,7 @@ void loop()
       break;
     case 1:
       lcd.clear();
-      lcd.print("State 2");
+      stopUr();
       break;    
     case 2:
       lcd.clear();
@@ -193,4 +196,13 @@ void printTime()
             break;
     }
     lcd.println(" ");*/
+}
+
+void stopUr();
+{
+    clock.getTime();
+    lcd.print(clock.minute, DEC);
+    lcd.print(":");
+    lcd.print(clock.second, DEC);
+    lcd.print("  ");
 }
