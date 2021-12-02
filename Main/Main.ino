@@ -7,13 +7,6 @@
 #include "DS1307.h"
 
 DS1307 clock;//define a object of DS1307 class
-
-
-/*Function: Display time on the serial monitor*/
-
-
-
-
 int state, flipCheck, flipCheckY;
 const int maxState = 4;
 
@@ -32,12 +25,11 @@ void setup() {
 	lcd.begin(16, 8, 2);
   accelmeter.init(); 
 
-  Serial.begin(9600);
-    clock.begin();
-    clock.fillByYMD(2013, 1, 19); //Jan 19,2013
-    clock.fillByHMS(12, 30, 50); //15:28 30"
-    clock.fillDayOfWeek(SAT);//Saturday
-    clock.setTime();//write time to the RTC chip
+  clock.begin();
+  clock.fillByYMD(2013, 1, 19); //Jan 19,2013
+  clock.fillByHMS(12, 30, 50); //15:28 30"
+  clock.fillDayOfWeek(SAT);//Saturday
+  clock.setTime();//write time to the RTC chip
 }
 
 void loop()
@@ -95,8 +87,7 @@ void loop()
       break;    
     case 2:
       lcd.clear();
-      getName(flipCheckY);
-      lcd.print("State 3");
+      getName();
       break;
     case 3:
       lcd.clear();
@@ -113,7 +104,7 @@ void loop()
   
 }
 
-void getName(int yPos) 
+void getName() 
 {
   char names[30][10] = 
   {
@@ -149,7 +140,11 @@ void getName(int yPos)
   "William"
   };
     lcd.print(names[random(0, 30)]);
-    sleep_until(flip.onFlip(yPos));
+    delay(500);
+    while(digitalRead(2) == 0)
+    {
+      
+    }
 }
 void printTime() 
 {
