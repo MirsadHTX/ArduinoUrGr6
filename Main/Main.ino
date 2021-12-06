@@ -7,105 +7,11 @@
 #include "DS1307.h"
 
 DS1307 clock;//define a object of DS1307 class
+
+
 int state, flipCheck, flipCheckY;
 const int maxState = 4;
-
-Flipper flip;
-
-MMA7660 accelmeter;
-rgb_lcd lcd;
-
-void setup() {
-  state = 0;
-
-   
-  Serial.begin(9600);
-  randomSeed(analogRead(0));
-
-	lcd.begin(16, 8, 2);
-  accelmeter.init(); 
-
-  clock.begin();
-  clock.fillByYMD(2013, 1, 19); //Jan 19,2013
-  clock.fillByHMS(12, 30, 50); //15:28 30"
-  clock.fillDayOfWeek(SAT);//Saturday
-  clock.setTime();//write time to the RTC chip
-}
-
-void loop()
-{ 
-  float x, y, z;
-  accelmeter.getAcceleration(&x, &y, &z); // Tager memory address som input
-  delay(50);
-
-  flipCheck = flip.onFlip(x);
-  flipCheckY = flip.onFlip(y);
-  
-  switch(flipCheck)
-  {
-    case 1:
-      if(state == maxState) 
-      {
-        state = 0;
-      } 
-      else 
-      {
-        state += 1;  
-      }
-      digitalWrite(2,HIGH);
-      delay(100);
-      digitalWrite(2,LOW);
-      break;
-      
-    case -1:
-      if(state == 0) 
-      {
-        state = maxState;
-      } 
-      else
-      {
-        state -= 1;  
-      }
-      digitalWrite(2,HIGH);
-      delay(100);
-      digitalWrite(2,LOW);
-      break;
-    
-    default:
-      break;
-  }
-    
-  switch(state)
-  {
-    case 0:
-      lcd.clear();
-      printTime();
-      break;
-    case 1:
-      lcd.clear();
-      lcd.print("State 2");
-      break;    
-    case 2:
-      lcd.clear();
-      getName();
-      break;
-    case 3:
-      lcd.clear();
-      lcd.print("State 4");
-      break;
-    case maxState:
-      lcd.clear();
-      lcd.print("State 5");
-      break;
-    default:
-      break;
-  }
-}
-
-void getName() 
-{
-  int check = 0;
-  char names[30][10] = 
+const char names[30][10] = 
   {
   "Anders",
   "Emil",
@@ -138,21 +44,125 @@ void getName()
   "Taaha",
   "William"
   };
-    if(check = 0)
-    {
-      lcd.print("Turn for name");
-      check = 1;
-    }
-    else if(digitalRead(2) == 1)
-    {
-      lcd.print(names[random(0, 30)]);
-    }
-    
-   /* while(digitalRead(2) == 0)
-    {
-      
-    } */
+
+
+Flipper flip;
+
+MMA7660 accelmeter;
+rgb_lcd lcd;
+long int unixTime = 1638446451;
+float x_last, y_last, z_last = 0.0;
+
+
+void setup() {
+  state = 0;
+
+   
+  Serial.begin(9600);
+  randomSeed(analogRead(0));
+
+	lcd.begin(16, 8, 2);
+  accelmeter.init(); 
+
+  Serial.begin(9600);
+  clock.begin();
+ /*   clock.fillByYMD(2013, 1, 19); //Jan 19,2013
+    clock.fillByHMS(12, 30, 50); //15:28 30"
+    clock.fillDayOfWeek(SAT);//Saturday
+   */ 
+   // clock.setTime(unixTime);//write time to the RTC chip
 }
+
+void loop()
+{ 
+  float x, y, z;
+  accelmeter.getAcceleration(&x, &y, &z); // Tager memory address som input
+  delay(50);
+
+  flipCheck = flip.onFlip(x);
+  flipCheckY = flip.onFlip(y);
+  
+  switch(flipCheck)
+  {
+    case 1:
+      if(state >= maxState) 
+      {
+        state = 0;
+      } 
+      else 
+      {
+        state += 1;  
+      }
+      digitalWrite(2,HIGH);
+      delay(100);
+      digitalWrite(2,LOW);
+      updateState(state, y);
+      break;
+      
+    case -1:
+      if(state <= 0) 
+      {
+        state = maxState;
+      } 
+      else
+      {
+        state -= 1;  
+      }
+      digitalWrite(2,HIGH);
+      delay(100);
+      digitalWrite(2,LOW);
+      updateState(state, y);  
+      break;
+    
+    default:
+      break;
+  }
+    x_last = x;
+  y_last = y;
+  z_last = z; 
+}
+
+
+void updateState(int state, float y)
+ {
+  switch(state)
+  {
+    case 0:
+      lcd.clear();
+      printTime();
+      break;
+    case 1:
+      lcd.clear();
+      stopUr();
+      break;    
+    case 2:
+      Serial.print((String)y_last + " " + (String)y);
+      if(y_last < y - 0.3 || y_last > y + 0.3) { // for at forhindre skift hele tiden har vi en +- 0.3
+        getName();
+      }
+      break;
+    case 3:
+      lcd.clear();
+      lcd.print("State 4");
+      break;
+    case maxState:
+      lcd.clear();
+      lcd.print("State 5");
+      break;
+    default:
+      break;
+  }
+
+ 
+}
+
+
+void getName() 
+{
+  lcd.clear();
+  lcd.print(names[random(0, 30)]);
+}
+
 void printTime() 
 {
     clock.getTime();
@@ -195,4 +205,13 @@ void printTime()
             break;
     }
     lcd.println(" ");*/
+}
+
+void stopUr()
+{
+    clock.getTime();
+    lcd.print(clock.minute, DEC);
+    lcd.print(":");
+    lcd.print(clock.second, DEC);
+    lcd.print("  ");
 }

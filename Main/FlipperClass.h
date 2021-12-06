@@ -3,35 +3,28 @@ class Flipper
   public:
   float currentState = 0;
   float lastState = 0;
+  float lastinput = 0.0;
   bool before = false;
   bool now = false;
   float limit = 0.8;  
   int onFlip(float input)
   {
-    lastState = currentState;
-    if(input > limit) 
+    
+    if(input > lastinput + limit) 
     {
-      currentState = 1;
-      now = true;
+      lastinput = input;
+      return 1;
     } 
-    else if (input < -limit) 
+    else if (input < lastinput - limit) 
     {
-      currentState = -1; 
-      now = true;
+      lastinput = input;
+      return -1;
     }
     else
     {
-      currentState = 0;
-      now = false;
-    }
-    if(lastState != currentState && before == false && now == true) 
-    {
-      return currentState;
-      before = true;
-    }
-    else
-    {
+      lastinput = input;
       return 0;
     }
+    return 0;
   }
 };
