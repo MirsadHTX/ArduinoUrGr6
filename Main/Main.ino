@@ -100,12 +100,11 @@ void loop()
     default:
       break;
   }
-
-  
 }
 
 void getName() 
 {
+  int check = 0;
   char names[30][10] = 
   {
   "Anders",
@@ -116,7 +115,7 @@ void getName()
   "Gustav E.",
   "Haris",
   "Ismail",
-  "Jabriil",
+  "Jabril",
   "Jacob",
   "Ludvig",
   "Jeppe",
@@ -139,12 +138,20 @@ void getName()
   "Taaha",
   "William"
   };
-    lcd.print(names[random(0, 30)]);
-    delay(500);
-    while(digitalRead(2) == 0)
+    if(check = 0)
+    {
+      lcd.print("Turn for name");
+      check = 1;
+    }
+    else if(digitalRead(2) == 1)
+    {
+      lcd.print(names[random(0, 30)]);
+    }
+    
+   /* while(digitalRead(2) == 0)
     {
       
-    }
+    } */
 }
 void printTime() 
 {
