@@ -8,8 +8,10 @@
 
 DS1307 clock;//define a object of DS1307 class
 
+bool off = false;
 
 int state, flipCheck, flipCheckY;
+int score = 0;
 const int maxState = 4;
 const char names[30][10] = 
   {
@@ -53,11 +55,9 @@ rgb_lcd lcd;
 long int unixTime = 1638446451;
 float x_last, y_last, z_last = 0.0;
 
-
 void setup() {
   state = 0;
 
-   
   Serial.begin(9600);
   randomSeed(analogRead(0));
 
@@ -93,10 +93,9 @@ void loop()
       {
         state += 1;  
       }
-      digitalWrite(2,HIGH);
+      digitalWrite(4,HIGH);
       delay(100);
-      digitalWrite(2,LOW);
-      updateState(state, y);
+      digitalWrite(4,LOW);
       break;
       
     case -1:
@@ -108,22 +107,21 @@ void loop()
       {
         state -= 1;  
       }
-      digitalWrite(2,HIGH);
+      digitalWrite(4,HIGH);
       delay(100);
-      digitalWrite(2,LOW);
-      updateState(state, y);  
+      digitalWrite(4,LOW);
       break;
     
     default:
       break;
   }
-    x_last = x;
+  x_last = x;
   y_last = y;
   z_last = z; 
+  updateState(state, y, y_last);  
 }
 
-
-void updateState(int state, float y)
+void updateState(int state, float y, float y_last)
  {
   switch(state)
   {
@@ -135,19 +133,18 @@ void updateState(int state, float y)
       lcd.clear();
       stopUr();
       break;    
-    case 2:
-      Serial.print((String)y_last + " " + (String)y);
+    case 2: 
+      lcd.clear();
+      lcd.print("State 4");
+      break;
+    case 3:
+      //Serial.print((String)y_last + " " + (String)y);
       if(y_last < y - 0.3 || y_last > y + 0.3) { // for at forhindre skift hele tiden har vi en +- 0.3
         getName();
       }
       break;
-    case 3:
-      lcd.clear();
-      lcd.print("State 4");
-      break;
     case maxState:
-      lcd.clear();
-      lcd.print("State 5");
+      game();
       break;
     default:
       break;
@@ -156,6 +153,35 @@ void updateState(int state, float y)
  
 }
 
+void game()
+{
+  if(score == 0)
+  {
+    lcd.clear();
+    lcd.print("Press the button");
+  }
+  if(digitalRead(2) == 1 && off == false)
+  {
+    score = score + 1;
+    lcd.clear();
+    lcd.print(score);
+    off = true;
+  }
+  
+  if(digitalRead(2) == 0)
+  {
+    off = false;
+  }
+  
+  if(score >= 10)
+  {
+    lcd.clear();
+    lcd.print("Time: ");
+    lcd.print(score);
+    delay(3000);
+    score = 0;
+  }
+}
 
 void getName() 
 {
